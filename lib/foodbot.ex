@@ -4,9 +4,9 @@ defmodule Foodbot do
   def start(_type, _args) do
     import Supervisor.Spec
 
-    config = Application.get_env(:foodbot, :endpoint)
+    port = Config.get_integer(:foodbot, :port)
     children = [
-      Plug.Adapters.Cowboy.child_spec(:http, Foodbot.Router, [], config),
+      Plug.Adapters.Cowboy.child_spec(:http, Foodbot.Router, [], [port: port]),
       supervisor(Foodbot.Restaurant.Supervisor, []),
     ]
 

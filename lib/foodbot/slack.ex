@@ -7,7 +7,7 @@ defmodule Foodbot.Slack do
 
   def command(all) when all in [nil, "", "all"] do
     text =
-      Restaurant.fetch_all({2016, 10, 28})
+      Restaurant.fetch_all
       |> Enum.map(&format_response/1)
       |> Enum.join("\n\n")
 
@@ -21,7 +21,6 @@ defmodule Foodbot.Slack do
           restaurant
           |> Restaurant.fetch
           |> format_response
-          |> Enum.join("\n")
         %{response_type: :in_channel, text: text}
 
       :error ->
