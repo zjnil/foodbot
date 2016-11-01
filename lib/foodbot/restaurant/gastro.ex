@@ -32,7 +32,7 @@ defmodule Foodbot.Restaurant.Gastro do
     menu_html
     |> Floki.find(".naslov")
     |> Floki.text
-    |> String.contains?(formatted_date(date))
+    |> String.contains?(format_date(date))
   end
 
   def process_menu(menu_html)
@@ -40,13 +40,19 @@ defmodule Foodbot.Restaurant.Gastro do
     menu_html
     |> Floki.find("li")
     |> Enum.map(&process_item/1)
+    |> Enum.reject(fn {_, price} -> price == nil end)
   end
 
-  def process_item({"li", _, [html_title, html_price]}) do
+  def process_item({"li", _, item_html}) do
+    {html_title, html_price} = Enum.split(item_html, -1)
     title = Floki.text(html_title) |> Format.title
     price = Floki.text(html_price) |> Format.price
     {title, price}
   end
 
-  def formatted_date({y, m, d}), do: "#{d}.#{m}.#{y}"
+  def format_date({year, month, day}) do
+    day = String.pad_leading("#{day}", 2, "0")
+    month = String.pad_leading("#{month}", 2, "0")
+    "#{day}.#{month}.#{year}"
+  end
 end

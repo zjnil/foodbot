@@ -36,7 +36,7 @@ defmodule Foodbot.Restaurant.Pauza do
     menu_html
     |> Floki.find("h1")
     |> Floki.text
-    |> String.contains?(formatted_date(date))
+    |> String.contains?(format_date(date))
   end
 
   def process_menu(menu_html) do
@@ -63,5 +63,9 @@ defmodule Foodbot.Restaurant.Pauza do
     {title, price}
   end
 
-  def formatted_date({y, m, d}), do: "#{d}.#{m}.#{y}"
+  def format_date({year, month, day}) do
+    day = String.pad_leading("#{day}", 2, "0")
+    month = String.pad_leading("#{month}", 2, "0")
+    "#{day}.#{month}.#{year}"
+  end
 end

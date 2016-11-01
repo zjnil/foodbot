@@ -32,7 +32,7 @@ defmodule Foodbot.Restaurant.Vinka do
     menu_html
     |> Floki.find(".day")
     |> Floki.text
-    |> String.contains?(formatted_date(date))
+    |> String.contains?(format_date(date))
   end
 
   def process_menu(menu_html)
@@ -66,7 +66,8 @@ defmodule Foodbot.Restaurant.Vinka do
     end
   end
 
-  def formatted_date({_year, _month, day} = date) do
+  def format_date({_year, _month, day} = date) do
+    day = String.pad_leading("#{day}", 2, "0")
     "#{day}. #{month_name(date)}"
   end
 end

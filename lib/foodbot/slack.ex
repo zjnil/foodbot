@@ -28,6 +28,11 @@ defmodule Foodbot.Slack do
     end
   end
 
+  def format_response({:ok, name, []}) do
+    [format_title(name), "  • _No menu for today_"]
+    |> Enum.join("\n")
+  end
+
   def format_response({:ok, name, menu}) do
     [format_title(name) | Enum.map(menu, &format_item/1)]
     |> Enum.join("\n")
