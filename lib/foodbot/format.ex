@@ -3,6 +3,8 @@ defmodule Foodbot.Format do
     title
     |> String.trim
     |> String.replace(",", ", ")
+    |> String.replace("( ", "(")
+    |> String.replace(" )", ")")
     |> String.replace(~r{\s+}u, " ")
     |> String.downcase
   end

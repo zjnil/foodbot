@@ -45,6 +45,7 @@ defmodule Foodbot.Restaurant.Pauza do
     |> Enum.filter(&is_menu_item?/1)
     |> Enum.reject(&is_additional_text?/1)
     |> Enum.map(&process_item/1)
+    |> Enum.reject(fn {title, _} -> title == "" end)
   end
 
   def is_menu_item?({"tr", [], tds}) do
