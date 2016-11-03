@@ -41,12 +41,17 @@ defmodule Foodbot.Restaurant.Vinka do
     |> Floki.find("li")
     |> Enum.drop(1)
     |> Enum.map(&process_item/1)
+    |> Enum.reject(fn item -> item == nil end)
   end
 
   def process_item({"li", _, item}) do
     text = Floki.text(item)
-    [[_, title, price | _rest]] = Regex.scan(~r{\d+\) (.+) (\d+,\d+)\s*(€|eur)}ui, text)
-    {Format.title(title), Format.price(price)}
+    case Regex.scan(~r{\d+\) (.+) (\d+,\d+) (€|eur)}ui, text) do
+      [[_, title, price | _rest]] ->
+        {Format.title(title), Format.price(price)}
+      [] ->
+        nil
+    end
   end
 
   def month_name({_year, month, _day}) do
