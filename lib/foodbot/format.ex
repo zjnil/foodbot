@@ -5,7 +5,7 @@ defmodule Foodbot.Format do
     |> String.replace(",", ", ")
     |> String.replace("( ", "(")
     |> String.replace(" )", ")")
-    |> String.replace(~r{\s+}u, " ")
+    |> String.replace(~r{\s+}, " ")
     |> String.downcase
   end
 

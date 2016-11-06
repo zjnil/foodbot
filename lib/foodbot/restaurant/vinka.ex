@@ -46,10 +46,23 @@ defmodule Foodbot.Restaurant.Vinka do
 
   def process_item({"li", _, item}) do
     text = Floki.text(item)
-    case Regex.scan(~r{\d+\) (.+) (\d+,\d+) (€|eur)}ui, text) do
-      [[_, title, price | _rest]] ->
+    match_with_price(text) || match_without_price(text)
+  end
+
+  def match_with_price(text) do
+    case Regex.run(~r{\d+\) (.+) (\d+,\d+)}, text) do
+      [_, title, price] ->
         {Format.title(title), Format.price(price)}
-      [] ->
+      nil ->
+        nil
+    end
+  end
+
+  def match_without_price(text) do
+    case Regex.run(~r{\d+\) (.+)}, text) do
+      [_, title] ->
+        {Format.title(title), nil}
+      nil ->
         nil
     end
   end

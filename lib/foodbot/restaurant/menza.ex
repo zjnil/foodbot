@@ -44,7 +44,7 @@ defmodule Foodbot.Restaurant.Menza do
   end
 
   def is_generic?(text) do
-    String.match?(text, ~r{juha|solatni bife|dnevna sladica}iu)
+    String.match?(text, ~r{juha|solatni bife|dnevna sladica}i)
   end
 
   def is_blank?(text) do
