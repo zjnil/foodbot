@@ -12,7 +12,7 @@ defmodule Foodbot.Mixfile do
 
   def application do
     [mod: {Foodbot, []},
-     applications: [:logger, :cowboy, :plug, :poison, :httpoison, :floki]]
+     applications: [:logger, :cowboy, :plug, :poison, :httpoison, :poolboy, :floki]]
   end
 
   defp deps do
