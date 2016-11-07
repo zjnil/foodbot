@@ -1,23 +1,8 @@
 defmodule Foodbot.Restaurant.Pauza do
-  use GenServer
   alias Foodbot.Format
 
-  @url "http://www.pauza.si/52-dnevne-malice"
-
   def name, do: "Pauza"
-
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
-  end
-
-  def handle_call({:fetch, date}, _from, state) do
-    menu = fetch |> process(date)
-    {:reply, menu, state}
-  end
-
-  def fetch do
-    HTTPoison.get!(@url)
-  end
+  def url, do: "http://www.pauza.si/52-dnevne-malice"
 
   def process(%{body: body}, date) do
     body

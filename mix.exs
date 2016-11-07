@@ -20,6 +20,7 @@ defmodule Foodbot.Mixfile do
      {:plug, "~> 1.0"},
      {:poison, "~> 3.0"},
      {:httpoison, "~> 0.9"},
+     {:poolboy, "~> 1.5"},
      {:floki, "~> 0.11"},
      {:distillery, "~> 0.10"}]
   end

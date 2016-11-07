@@ -1,11 +1,15 @@
 defmodule Foodbot.Restaurant do
+  alias Foodbot.Restaurant.WorkerPool
+
   def fetch(restaurant, date \\ today) do
-    name = restaurant.name
     try do
-      menu = GenServer.call(restaurant, {:fetch, date})
-      {:ok, name, menu}
+      menu = :poolboy.transaction(WorkerPool, fn(pid) ->
+        GenServer.call(pid, {:fetch, restaurant, date})
+      end)
+
+      {:ok, {restaurant.name, menu}}
     catch
-      :exit, _ -> {:error, name, :crashed}
+      :exit, _ -> {:error, {restaurant.name, :exited}}
     end
   end
 

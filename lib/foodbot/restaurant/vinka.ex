@@ -1,23 +1,8 @@
 defmodule Foodbot.Restaurant.Vinka do
-  use GenServer
   alias Foodbot.Format
 
-  @url "https://api.malcajt.com/getApiData.php?action=embed&id=1099&show=100"
-
   def name, do: "Vinka"
-
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
-  end
-
-  def handle_call({:fetch, date}, _from, state) do
-    menu = fetch |> process(date)
-    {:reply, menu, state}
-  end
-
-  def fetch do
-    HTTPoison.get!(@url)
-  end
+  def url, do: "https://api.malcajt.com/getApiData.php?action=embed&id=1099&show=100"
 
   def process(%{body: body}, date) do
     body
