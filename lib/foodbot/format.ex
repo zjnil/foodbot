@@ -2,10 +2,18 @@ defmodule Foodbot.Format do
   def title(title) do
     title
     |> String.trim
-    |> String.replace(",", ", ")
+    # remove leading dashes
+    |> String.replace_prefix("-", "")
+    # fix parenthesis
     |> String.replace("( ", "(")
     |> String.replace(" )", ")")
+    # fix punctuation
+    |> String.replace(~r/([,!.])/, "\\1 ")
+    |> String.replace(~r/\s+([,!.])/, "\\1")
+    # remove double spaces
     |> String.replace(~r{\s+}, " ")
+    # removeF the leftover spaces from previous operations
+    |> String.trim
     |> String.downcase
   end
 
