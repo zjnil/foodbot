@@ -28,4 +28,4 @@ deployment:
     commands:
       - MIX_ENV=prod mix compile
       - MIX_ENV=prod mix release --env=prod
-      - script/deploy.sh "$SSH_SERVER" "$SSH_PATH"
+      - script/deploy.sh "$REL_NAME" "$SSH_SERVER" "$DEPLOY_PATH"
