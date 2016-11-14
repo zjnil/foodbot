@@ -12,7 +12,7 @@ defmodule Foodbot.Format do
     |> String.replace(~r/\s+([,!.])/, "\\1")
     # remove double spaces
     |> String.replace(~r{\s+}, " ")
-    # removeF the leftover spaces from previous operations
+    # remove the leftover spaces from previous operations
     |> String.trim
     |> String.downcase
   end
