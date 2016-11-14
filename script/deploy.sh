@@ -13,6 +13,7 @@ scp "rel/$REL_NAME/releases/$VERSION/$REL_NAME.tar.gz" "$SSH_SERVER:/$DEPLOY_PAT
 
 # extract and stop server (let the supervisor restart it)
 ssh "$SSH_SERVER" <<ENDSSH
+  set -e
   cd "$DEPLOY_PATH"
   tar xvf "$REL_NAME.tar.gz"
   "bin/$REL_NAME" stop
