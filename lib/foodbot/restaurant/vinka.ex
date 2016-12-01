@@ -54,18 +54,18 @@ defmodule Foodbot.Restaurant.Vinka do
 
   def month_name({_year, month, _day}) do
     case month do
-      1  -> "Januar"
-      2  -> "Februar"
-      3  -> "Marec"
-      4  -> "April"
+      1  -> "Jan"
+      2  -> "Feb"
+      3  -> "Mar"
+      4  -> "Apr"
       5  -> "Maj"
-      6  -> "Junij"
-      7  -> "Julij"
-      8  -> "Avgust"
-      9  -> "September"
-      10 -> "Oktober"
-      11 -> "November"
-      12 -> "December"
+      6  -> "Jun"
+      7  -> "Jul"
+      8  -> "Avg"
+      9  -> "Sep"
+      10 -> "Okt"
+      11 -> "Nov"
+      12 -> "Dec"
     end
   end
 
