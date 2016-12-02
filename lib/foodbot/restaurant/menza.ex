@@ -20,6 +20,7 @@ defmodule Foodbot.Restaurant.Menza do
     title =
       list
       |> Enum.flat_map(fn p -> String.split(Floki.text(p), "\n") end)
+      |> Enum.drop(1)
       |> Enum.reject(&is_blank?/1)
       |> Enum.reject(&is_generic?/1)
       |> Enum.join(", ")
@@ -29,7 +30,7 @@ defmodule Foodbot.Restaurant.Menza do
   end
 
   def is_generic?(text) do
-    String.match?(text, ~r{juha|solatni bife|dnevna sladica}i)
+    String.match?(text, ~r{solatni bife|dnevna sladica}i)
   end
 
   def is_blank?(text) do
