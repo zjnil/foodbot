@@ -23,20 +23,20 @@ defmodule Foodbot.Restaurant.Vinka do
   def process_menu(menu_html)
   when is_tuple(menu_html) do
     menu_html
-    |> Floki.find("li")
+    |> Floki.text
+    |> String.split("\n")
     |> Enum.drop(1)
     |> Enum.map(&process_item/1)
     |> Enum.reject(fn item -> item == nil end)
   end
 
-  def process_item({"li", _, item}) do
-    text = Floki.text(item)
+  def process_item(text) do
     match_with_price(text) || match_without_price(text)
   end
 
   def match_with_price(text) do
-    case Regex.run(~r{\d+\) (.+) (\d+,\d+)}, text) do
-      [_, title, price] ->
+    case Regex.run(~r{(\d+\))? (.+) (\d+,\d+)}, text) do
+      [_, _, title, price] ->
         {Format.title(title), Format.price(price)}
       nil ->
         nil
@@ -44,8 +44,8 @@ defmodule Foodbot.Restaurant.Vinka do
   end
 
   def match_without_price(text) do
-    case Regex.run(~r{\d+\) (.+)}, text) do
-      [_, title] ->
+    case Regex.run(~r{(\d+\))? (.+)}, text) do
+      [_, _, title] ->
         {Format.title(title), nil}
       nil ->
         nil
