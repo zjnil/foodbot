@@ -26,6 +26,7 @@ defmodule Foodbot.Restaurant.Vinka do
     |> Floki.text
     |> String.split("\n")
     |> Enum.drop(1)
+    |> Enum.reject(&is_blank?/1)
     |> Enum.map(&process_item/1)
     |> Enum.reject(fn item -> item == nil end)
   end
@@ -35,7 +36,7 @@ defmodule Foodbot.Restaurant.Vinka do
   end
 
   def match_with_price(text) do
-    case Regex.run(~r{(\d+\))? (.+) (\d+,\d+)}, text) do
+    case Regex.run(~r{(\d+\) )?(.+) (\d+,\d+)}, text) do
       [_, _, title, price] ->
         {Format.title(title), Format.price(price)}
       nil ->
@@ -44,7 +45,7 @@ defmodule Foodbot.Restaurant.Vinka do
   end
 
   def match_without_price(text) do
-    case Regex.run(~r{(\d+\))? (.+)}, text) do
+    case Regex.run(~r{(\d+\) )?(.+)}, text) do
       [_, _, title] ->
         {Format.title(title), nil}
       nil ->
@@ -67,6 +68,10 @@ defmodule Foodbot.Restaurant.Vinka do
       11 -> "Nov"
       12 -> "Dec"
     end
+  end
+
+  def is_blank?(text) do
+    String.strip(text) == ""
   end
 
   def format_date({_year, _month, day} = date) do
