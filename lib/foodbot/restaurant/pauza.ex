@@ -49,9 +49,9 @@ defmodule Foodbot.Restaurant.Pauza do
     {title, price}
   end
 
-  def format_date({year, month, day}) do
+  def format_date({_, month, day}) do
     day = String.pad_leading("#{day}", 2, "0")
     month = String.pad_leading("#{month}", 2, "0")
-    "#{day}.#{month}.#{year}"
+    "#{day}.#{month}"
   end
 end
