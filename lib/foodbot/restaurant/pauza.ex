@@ -19,7 +19,6 @@ defmodule Foodbot.Restaurant.Pauza do
 
   def menu_for_correct_date?(menu_html, date) do
     menu_html
-    |> Floki.find("h1")
     |> Floki.text
     |> String.contains?(format_date(date))
   end
