@@ -28,6 +28,7 @@ defmodule Foodbot.Restaurant.Vinka do
     |> Enum.drop(1)
     |> Enum.reject(&is_blank?/1)
     |> Enum.reject(&is_title?/1)
+    |> Enum.reject(&is_phone?/1)
     |> Enum.map(&process_item/1)
     |> Enum.reject(fn item -> item == nil end)
   end
@@ -77,6 +78,10 @@ defmodule Foodbot.Restaurant.Vinka do
 
   def is_title?(text) do
     String.ends_with?(String.strip(text), [";", ":"])
+  end
+
+  def is_phone?(text) do
+    String.contains?(text, "telefon")
   end
 
   def format_date({_year, _month, day} = date) do
