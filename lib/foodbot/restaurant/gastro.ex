@@ -29,9 +29,10 @@ defmodule Foodbot.Restaurant.Gastro do
   end
 
   def process_item({"li", _, item_html}) do
-    {html_title, html_price} = Enum.split(item_html, -1)
-    title = Floki.text(html_title) |> Format.title
-    price = Floki.text(html_price) |> Format.price
+    title_html = List.first(item_html)
+    price_html = Floki.find(item_html, "span")
+    title = Floki.text(title_html) |> Format.title
+    price = Floki.text(price_html) |> Format.price
     {title, price}
   end
 
