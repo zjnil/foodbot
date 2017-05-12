@@ -5,11 +5,13 @@ defmodule Foodbot.Restaurant.Vinka do
   def url, do: "https://api.malcajt.com/getApiData.php?action=embed&id=1099&show=100"
 
   def process(%{body: body}, date) do
-    body
-    |> Floki.parse
-    |> Floki.find("#lunch ul")
-    |> Enum.find(&menu_matches_date?(&1, date))
-    |> process_menu
+    menu =
+      body
+      |> Floki.parse
+      |> Floki.find("#lunch ul")
+      |> Enum.find(&menu_matches_date?(&1, date))
+      |> process_menu
+    {menu, date}
   end
 
   def menu_matches_date?(menu_html, date)
@@ -55,8 +57,8 @@ defmodule Foodbot.Restaurant.Vinka do
     end
   end
 
-  def month_name({_year, month, _day}) do
-    case month do
+  def month_name(date) do
+    case date.month do
       1  -> "Jan"
       2  -> "Feb"
       3  -> "Mar"
@@ -84,8 +86,8 @@ defmodule Foodbot.Restaurant.Vinka do
     String.contains?(text, "telefon")
   end
 
-  def format_date({_year, _month, day} = date) do
-    day = String.pad_leading("#{day}", 2, "0")
+  def format_date(date) do
+    day = String.pad_leading("#{date.day}", 2, "0")
     "#{day}. #{month_name(date)}"
   end
 end

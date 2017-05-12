@@ -28,23 +28,23 @@ defmodule Foodbot.Slack do
     end
   end
 
-  def format_response({:ok, {name, []}}) do
-    [format_title(name), "  • _No menu for today_"]
+  def format_response({:ok, {name, date, []}}) do
+    [format_title(name, date), "  • _No menu for today_"]
     |> Enum.join("\n")
   end
 
-  def format_response({:ok, {name, menu}}) do
-    [format_title(name) | Enum.map(menu, &format_item/1)]
+  def format_response({:ok, {name, date, menu}}) do
+    [format_title(name, date) | Enum.map(menu, &format_item/1)]
     |> Enum.join("\n")
   end
 
-  def format_response({:error, {name, _}}) do
-    [format_title(name), "  • _Could not fetch today's menu_"]
+  def format_response({:error, {name, date, _}}) do
+    [format_title(name, date), "  • _Could not fetch today's menu_"]
     |> Enum.join("\n")
   end
 
-  def format_title(name) do
-    time = DateTime.utc_now |> DateTime.to_unix
+  def format_title(name, date) do
+    time = date |> DateTime.to_unix
     "*#{name}* (<!date^#{time}^{date_long}|Today>)"
   end
 

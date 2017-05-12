@@ -5,10 +5,12 @@ defmodule Foodbot.Restaurant.Menza do
   def url, do: "http://www.femec.si/poslovne-enote/"
 
   def process(%{body: body}, date) do
-    body
-    |> Floki.parse
-    |> Floki.find("##{week_day(date)} .menucontent")
-    |> process_menu
+    menu =
+      body
+      |> Floki.parse
+      |> Floki.find("##{week_day(date)} .menucontent")
+      |> process_menu
+    {menu, date}
   end
 
   def process_menu(menu_html) do
@@ -36,8 +38,8 @@ defmodule Foodbot.Restaurant.Menza do
     String.strip(text) == ""
   end
 
-  def week_day({y, m, d}) do
-    case :calendar.day_of_the_week(y, m, d) do
+  def week_day(date) do
+    case :calendar.day_of_the_week(date.year, date.month, date.day) do
       1 -> "ponedeljek"
       2 -> "torek"
       3 -> "sreda"

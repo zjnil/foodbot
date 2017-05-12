@@ -3,13 +3,13 @@ defmodule Foodbot.Restaurant do
 
   def fetch(restaurant, date \\ today) do
     try do
-      menu = :poolboy.transaction(WorkerPool, fn(pid) ->
+      {menu, date} = :poolboy.transaction(WorkerPool, fn(pid) ->
         GenServer.call(pid, {:fetch, restaurant, date})
       end)
 
-      {:ok, {restaurant.name, menu}}
+      {:ok, {restaurant.name, date, menu}}
     catch
-      :exit, _ -> {:error, {restaurant.name, :exited}}
+      :exit, _ -> {:error, {restaurant.name, date, :exited}}
     end
   end
 
@@ -33,5 +33,5 @@ defmodule Foodbot.Restaurant do
   end
 
   def restaurants, do: Application.get_env(:foodbot, :restaurants)
-  def today, do: elem(:calendar.local_time(), 0)
+  def today, do: DateTime.utc_now
 end

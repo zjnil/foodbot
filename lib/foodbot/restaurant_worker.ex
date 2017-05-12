@@ -15,6 +15,6 @@ defmodule Foodbot.Restaurant.Worker do
   end
 
   def fetch(restaurant) do
-    HTTPoison.get!(restaurant.url)
+    HTTPoison.get!(restaurant.url, [], follow_redirect: true)
   end
 end

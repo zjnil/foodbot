@@ -5,11 +5,13 @@ defmodule Foodbot.Restaurant.Gastro do
   def url, do: "http://www.gastrohouse.si/index.php/tedenska-ponudba"
 
   def process(%{body: body}, date) do
-    body
-    |> Floki.parse
-    |> Floki.find(".futr")
-    |> Enum.find(&menu_matches_date?(&1, date))
-    |> process_menu
+    menu =
+      body
+      |> Floki.parse
+      |> Floki.find(".futr")
+      |> Enum.find(&menu_matches_date?(&1, date))
+      |> process_menu
+    {menu, date}
   end
 
   def menu_matches_date?(menu_html, date)
@@ -36,9 +38,10 @@ defmodule Foodbot.Restaurant.Gastro do
     {title, price}
   end
 
-  def format_date({year, month, day}) do
-    day = String.pad_leading("#{day}", 2, "0")
-    month = String.pad_leading("#{month}", 2, "0")
+  def format_date(date) do
+    day = String.pad_leading("#{date.day}", 2, "0")
+    month = String.pad_leading("#{date.month}", 2, "0")
+    year = date.year
     "#{day}.#{month}.#{year}"
   end
 end

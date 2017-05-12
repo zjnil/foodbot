@@ -5,11 +5,13 @@ defmodule Foodbot.Restaurant.Pauza do
   def url, do: "http://www.pauza.si/52-dnevne-malice"
 
   def process(%{body: body}, date) do
-    body
-    |> Floki.parse
-    |> Floki.find("article table")
-    |> ensure_correct_date(date)
-    |> process_menu
+    menu =
+      body
+      |> Floki.parse
+      |> Floki.find("article table")
+      |> ensure_correct_date(date)
+      |> process_menu
+    {menu, date}
   end
 
   def ensure_correct_date(menu_html, date) do
@@ -48,9 +50,9 @@ defmodule Foodbot.Restaurant.Pauza do
     {title, price}
   end
 
-  def format_date({_, month, day}) do
-    day = String.pad_leading("#{day}", 2, "0")
-    month = String.pad_leading("#{month}", 2, "0")
+  def format_date(date) do
+    day = String.pad_leading("#{date.day}", 2, "0")
+    month = String.pad_leading("#{date.month}", 2, "0")
     "#{day}.#{month}"
   end
 end
