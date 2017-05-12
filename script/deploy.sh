@@ -12,7 +12,7 @@ VERSION=$(mix run -e "IO.puts(Mix.Project.config[:version])")
 scp "rel/$REL_NAME/releases/$VERSION/$REL_NAME.tar.gz" "$SSH_SERVER:/$DEPLOY_PATH"
 
 # extract and stop server (let the supervisor restart it)
-ssh "$SSH_SERVER" <<ENDSSH
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$SSH_SERVER" <<ENDSSH
   set -e
   cd "$DEPLOY_PATH"
   tar xvf "$REL_NAME.tar.gz"

@@ -1,0 +1,52 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/elixir:1.4.2
+        environment:
+          REL_NAME: "foodbot"
+
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Hex
+          command: mix local.hex --force
+
+      - run:
+          name: Install Rebar
+          command: mix local.rebar --force
+
+      - restore-cache:
+          key: mix.lock-{{checksum "mix.lock"}}
+
+      - run:
+          name: Install mix dependencies
+          command: mix deps.get
+
+      - run:
+          name: Compile dependencies
+          command: mix deps.compile
+
+      - save-cache:
+          key: mix.lock-{{checksum "mix.lock"}}
+          paths:
+            - deps
+
+      - run:
+          name: Run tests
+          command: mix test
+
+      - run:
+          name: Compile
+          command: MIX_ENV=prod mix compile
+
+      - run:
+          name: Build release
+          command: MIX_ENV=prod mix release --env=prod
+
+      - deploy:
+          name: Deploy
+          command: script/deploy.sh "$REL_NAME" "$SSH_SERVER" "$DEPLOY_PATH"
