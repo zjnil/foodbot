@@ -9,7 +9,7 @@ config :foodbot, restaurants: [
   menza: Foodbot.Restaurant.Menza,
   pauza: Foodbot.Restaurant.Pauza,
   vinka: Foodbot.Restaurant.Vinka,
-  kulinarija: Foodbot.Restaurant.Kulinarija
+  kulinarnia: Foodbot.Restaurant.Kulinarnia
 ]
 
 import_config "#{Mix.env}.exs"

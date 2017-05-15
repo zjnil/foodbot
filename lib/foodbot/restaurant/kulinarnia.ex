@@ -1,7 +1,7 @@
-defmodule Foodbot.Restaurant.Kulinarija do
+defmodule Foodbot.Restaurant.Kulinarnia do
   alias Foodbot.Format
 
-  def name, do: "D·Labs Kulinarija"
+  def name, do: "D·Labs Kulinarnia"
   def url, do: "https://drive.google.com/uc?export=download&id=0B6hU-wFCt6IRZEpiZW0zWUlDNFk"
 
   def process(%{body: body}, _date) do
