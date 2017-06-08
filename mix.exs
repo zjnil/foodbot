@@ -22,6 +22,6 @@ defmodule Foodbot.Mixfile do
      {:httpoison, "~> 0.9"},
      {:poolboy, "~> 1.5"},
      {:floki, "~> 0.11"},
-     {:distillery, "~> 0.10"}]
+     {:mix_docker, "~> 0.4.0"}]
   end
 end

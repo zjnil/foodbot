@@ -2,6 +2,8 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :mix_docker, image: "szlend/foodbot", tag: "latest"
+
 config :foodbot, :port, {:system, "PORT", 4000}
 
 config :foodbot, restaurants: [

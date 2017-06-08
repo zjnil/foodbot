@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/elixir:1.4.4
+    working_directory: ~/app
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          reusable: true
+
+      - type: shell
+        name: Install hex
+        command: mix local.hex --force
+
+      - type: shell
+        name: Install rebar
+        command: mix local.rebar --force
+
+      - type: shell
+        name: Fetch dependencies
+        command: mix deps.get
+
+      - type: shell
+        name: Build release
+        command: mix docker.build
+
+      - type: shell
+        name: Build image
+        command: mix docker.release
+
+      - type: shell
+        name: Login to Docker
+        command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - type: shell
+        name: Build release
+        command: mix docker.publish
