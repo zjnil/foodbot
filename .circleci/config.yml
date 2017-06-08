@@ -11,16 +11,25 @@ jobs:
           reusable: true
 
       - type: shell
-        name: Install hex
-        command: mix local.hex --force
+        name: Install build tools
+        command: mix do local.hex --force, local.rebar --force
 
-      - type: shell
-        name: Install rebar
-        command: mix local.rebar --force
+      - type: cache-restore
+        key: mix.lock-{{checksum "mix.lock"}}
 
       - type: shell
         name: Fetch dependencies
         command: mix deps.get
+
+      - type: shell
+        name: Compile dependencies
+        command: mix deps.compile
+
+      - type: cache-save
+        key: mix.lock-{{checksum "mix.lock"}}
+        paths:
+          - _build
+          - deps
 
       - type: shell
         name: Build release
