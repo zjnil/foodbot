@@ -27,15 +27,17 @@ defmodule Foodbot.Restaurant.Gastro do
     menu_html
     |> Floki.find("li")
     |> Enum.map(&process_item/1)
-    |> Enum.reject(fn {_, price} -> price == nil end)
+    |> Enum.reject(fn item -> item == nil end)
   end
 
   def process_item({"li", _, item_html}) do
-    title_html = List.first(item_html)
-    price_html = Floki.find(item_html, "span")
-    title = Floki.text(title_html) |> Format.title
-    price = Floki.text(price_html) |> Format.price
-    {title, price}
+    text = Floki.text(item_html)
+    case Regex.run(~r{(.+)\s+(\d+,\d+)}u, text) do
+      [_, title, price] ->
+        {Format.title(title), Format.price(price)}
+      nil ->
+        nil
+    end
   end
 
   def format_date(date) do
