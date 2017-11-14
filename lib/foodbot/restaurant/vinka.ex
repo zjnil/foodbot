@@ -75,11 +75,11 @@ defmodule Foodbot.Restaurant.Vinka do
   end
 
   def is_blank?(text) do
-    String.strip(text) == ""
+    String.trim(text) == ""
   end
 
   def is_title?(text) do
-    String.ends_with?(String.strip(text), [";", ":"])
+    String.ends_with?(String.trim(text), [";", ":"])
   end
 
   def is_phone?(text) do

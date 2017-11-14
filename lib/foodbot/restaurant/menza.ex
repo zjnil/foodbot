@@ -35,7 +35,7 @@ defmodule Foodbot.Restaurant.Menza do
   end
 
   def is_blank?(text) do
-    String.strip(text) == ""
+    String.trim(text) == ""
   end
 
   def week_day(date) do
