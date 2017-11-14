@@ -8,8 +8,5 @@ EXPOSE 4000
 ENV PORT=4000 MIX_ENV=prod REPLACE_OS_VARS=true SHELL=/bin/sh
 
 ADD foodbot.tar.gz ./
-RUN chown -R default ./releases
-
-USER default
 
 ENTRYPOINT ["/opt/app/bin/foodbot"]
