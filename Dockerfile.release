@@ -1,12 +1,13 @@
 FROM elixir:1.5.2-alpine
 
 RUN apk update && \
-    apk --no-cache --update add libgcc libstdc++ && \
+    apk --no-cache --update add bash libgcc libstdc++ && \
     rm -rf /var/cache/apk/*
 
 EXPOSE 4000
 ENV PORT=4000 MIX_ENV=prod REPLACE_OS_VARS=true SHELL=/bin/sh
 
+WORKDIR /opt/app
 ADD foodbot.tar.gz ./
 
 ENTRYPOINT ["/opt/app/bin/foodbot"]
