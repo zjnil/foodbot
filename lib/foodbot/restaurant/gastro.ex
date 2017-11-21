@@ -16,10 +16,13 @@ defmodule Foodbot.Restaurant.Gastro do
 
   def menu_matches_date?(menu_html, date)
   when is_tuple(menu_html) do
-    menu_html
-    |> Floki.find(".naslov")
-    |> Floki.text
-    |> String.contains?(format_date(date))
+    text =
+      menu_html
+      |> Floki.find(".naslov")
+      |> Floki.text
+
+    String.contains?(text, format_date(date))
+      || String.contains?(text, week_day(date))
   end
 
   def process_menu(menu_html)
@@ -45,5 +48,15 @@ defmodule Foodbot.Restaurant.Gastro do
     month = String.pad_leading("#{date.month}", 2, "0")
     year = date.year
     "#{day}.#{month}.#{year}"
+  end
+
+  def week_day(date) do
+    case :calendar.day_of_the_week(date.year, date.month, date.day) do
+      1 -> "ponedeljek"
+      2 -> "torek"
+      3 -> "sreda"
+      4 -> "cetrtek"
+      5 -> "petek"
+    end
   end
 end
