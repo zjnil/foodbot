@@ -17,8 +17,8 @@ defmodule Foodbot.Restaurant.Worker do
   def fetch(restaurant) do
     HTTPoison.get!(restaurant.url, [],
       follow_redirect: true,
-      timeout: 500,
-      recv_timeout: 2_000
+      timeout: 1000,
+      recv_timeout: 4_000
     )
   end
 end
